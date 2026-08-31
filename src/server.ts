@@ -27,6 +27,7 @@ server.registerTool(
           );
         
           const repos = await response.json();
+          console.log(repos,'test')
         
           let totalCommits = 0;
         
@@ -39,6 +40,7 @@ server.registerTool(
           endOfToday.setHours(23, 59, 59, 999);
         
           for (const repo of repos) {
+           
             const commitsResponse = await fetch(
               `https://api.github.com/repos/JokkimDoras/${repo.name}/commits?author=JokkimDoras&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
               {
@@ -77,5 +79,80 @@ server.registerTool(
 const transport = new StdioServerTransport();
 
 await server.connect(transport)
+
+
+
+
+
+
+
+
+
+
+////////////// 
+
+// TEST CODE
+
+// async function test () {
+
+//     const response = await fetch(
+//         "https://api.github.com/user/repos?per_page=100",
+//         {
+//           headers: {
+//             Authorization: `Bearer ${API_KEY}`,
+//             Accept: "application/vnd.github+json",
+//           },
+//         }
+//       );
+    
+//       const repos = await response.json();
+    
+//       let totalCommits = 0;
+    
+//       const repositories: Record<string, number> = {};
+    
+//       const startOfToday = new Date();
+//       startOfToday.setHours(0, 0, 0, 0);
+    
+//       const endOfToday = new Date();
+//       endOfToday.setHours(23, 59, 59, 999);
+    
+//       for (const repo of repos) {
+       
+//         const commitsResponse = await fetch(
+//           `https://api.github.com/repos/JokkimDoras/${repo.name}/commits?author=JokkimDoras&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
+//           {
+//             headers: {
+//               Authorization: `Bearer ${API_KEY}`,
+//               Accept: "application/vnd.github+json",
+//             },
+//           }
+//         );
+    
+//         const commits = await commitsResponse.json();
+          
+//         if (commits.length > 0) {
+//           repositories[repo.name] = commits.length;
+//           totalCommits += commits.length;
+//         }
+//         // console.log(repo.name,commits.length)
+//       }
+
+    
+//       return {
+//         content: [
+//           {
+//             type: "text",
+//             text: JSON.stringify({
+//               totalCommits,
+//               repositories
+//             })
+//           }
+//         ]
+//       };
+  
+// }
+// const final =await test();
+// console.log(final)
 
 
