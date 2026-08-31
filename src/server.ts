@@ -16,6 +16,20 @@ server.registerTool(
     },
     async () => {
 
+      const userResponse = await fetch(
+        "https://api.github.com/user",
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+            Accept: "application/vnd.github+json",
+          },
+        }
+      );
+      
+      const user = await userResponse.json();
+      
+      const username = user.login;
+
         const response = await fetch(
             "https://api.github.com/user/repos?per_page=100",
             {
@@ -42,7 +56,7 @@ server.registerTool(
           for (const repo of repos) {
            
             const commitsResponse = await fetch(
-              `https://api.github.com/repos/JokkimDoras/${repo.name}/commits?author=JokkimDoras&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
+              `https://api.github.com/repos/JokkimDoras/${repo.name}/commits?author=${username}&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
               {
                 headers: {
                   Authorization: `Bearer ${API_KEY}`,
@@ -89,11 +103,25 @@ await server.connect(transport)
 
 
 
-////////////// 
+//////////////////////////////////////////////////////////////////
 
 // TEST CODE
 
 // async function test () {
+
+//   const userResponse = await fetch(
+//     "https://api.github.com/user",
+//     {
+//       headers: {
+//         Authorization: `Bearer ${API_KEY}`,
+//         Accept: "application/vnd.github+json",
+//       },
+//     }
+//   );
+  
+//   const user = await userResponse.json();
+  
+//   const username = user.login;
 
 //     const response = await fetch(
 //         "https://api.github.com/user/repos?per_page=100",
@@ -120,7 +148,7 @@ await server.connect(transport)
 //       for (const repo of repos) {
        
 //         const commitsResponse = await fetch(
-//           `https://api.github.com/repos/JokkimDoras/${repo.name}/commits?author=JokkimDoras&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
+//           `https://api.github.com/repos/${username}/${repo.name}/commits?author=${username}&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
 //           {
 //             headers: {
 //               Authorization: `Bearer ${API_KEY}`,
