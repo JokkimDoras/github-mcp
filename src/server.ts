@@ -41,7 +41,6 @@ server.registerTool(
           );
         
           const repos = await response.json();
-          console.log(repos,'test')
         
           let totalCommits = 0;
         
@@ -56,7 +55,7 @@ server.registerTool(
           for (const repo of repos) {
            
             const commitsResponse = await fetch(
-              `https://api.github.com/repos/JokkimDoras/${repo.name}/commits?author=${username}&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
+              `https://api.github.com/repos/${username}/${repo.name}/commits?author=${username}&since=${startOfToday.toISOString()}&until=${endOfToday.toISOString()}`,
               {
                 headers: {
                   Authorization: `Bearer ${API_KEY}`,
