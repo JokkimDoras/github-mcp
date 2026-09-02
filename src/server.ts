@@ -58,6 +58,49 @@ const getUserRepos = async() => {
   return repos
 }
 
+
+async function getPullRequestTest() {
+  const userName = await getUserName();
+  const repos = await getUserRepos();
+  const allPRs: PullRequest[] = [];
+
+  for (const repo of repos) {
+    const response = await fetch(
+      `https://api.github.com/repos/${userName}/${repo.name}/pulls?state=open`,
+      {
+        headers: {
+          Authorization: `Bearer ${API_KEY}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.log(`Failed: ${repo.name} - ${response.status}`);
+      continue;
+    }
+
+    const prs:PullRequest[] = await response.json();
+
+    for (const pr of prs) {
+      allPRs.push({
+        repo: repo.name,
+        number: pr.number,
+        title: pr.title,
+        body: pr.body,
+        author: pr.user.login,
+        baseBranch: pr.base.ref,
+        headBranch: pr.head.ref,
+        draft: pr.draft,
+      });
+
+    }
+  }
+  return allPRs
+}
+
+
+
 server.registerTool(
     "getMyTodayCommits",
     {
@@ -143,45 +186,6 @@ const transport = new StdioServerTransport();
 await server.connect(transport)
 
 
-async function getPullRequestTest() {
-  const userName = await getUserName();
-  const repos = await getUserRepos();
-  const allPRs: PullRequest[] = [];
-
-  for (const repo of repos) {
-    const response = await fetch(
-      `https://api.github.com/repos/${userName}/${repo.name}/pulls?state=open`,
-      {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          Accept: "application/vnd.github+json",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      console.log(`Failed: ${repo.name} - ${response.status}`);
-      continue;
-    }
-
-    const prs:PullRequest[] = await response.json();
-
-    for (const pr of prs) {
-      allPRs.push({
-        repo: repo.name,
-        number: pr.number,
-        title: pr.title,
-        body: pr.body,
-        author: pr.user.login,
-        baseBranch: pr.base.ref,
-        headBranch: pr.head.ref,
-        draft: pr.draft,
-      });
-
-    }
-  }
-  return allPRs
-}
 
 
 
