@@ -8,12 +8,12 @@ A lightweight [Model Context Protocol (MCP)](https://modelcontextprotocol.io) se
 
 ```mermaid
 flowchart LR
-    A["🧑 User"] -->|"Ask: How many commits today?"| B["🤖 Claude (MCP Client)"]
+    A[" User"] -->|"Ask: How many commits today?"| B[" Claude (MCP Client)"]
     B -->|"stdio transport"| C["⚙️ MCP Server\n(github-assistant)"]
     C -->|"registerTool: getMyTodayCommits"| D{"GitHub REST API"}
-    D -->|"GET /user"| E["👤 Authenticated user"]
-    D -->|"GET /user/repos"| F["📦 List of repositories"]
-    D -->|"GET /repos/:owner/:repo/commits"| G["🔁 Commits per repo (today)"]
+    D -->|"GET /user"| E[" Authenticated user"]
+    D -->|"GET /user/repos"| F[" List of repositories"]
+    D -->|"GET /repos/:owner/:repo/commits"| G[" Commits per repo (today)"]
     E --> C
     F --> C
     G --> C
@@ -29,7 +29,7 @@ flowchart LR
 
 ---
 
-## ✨ Features
+## Features
 
 -  Secure token-based GitHub authentication (via `.env`, never hardcoded)
 -  Aggregates today's commit count across **all** your repositories
